@@ -1,8 +1,10 @@
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
+# TODO: SEED
+# TODO: SPLIT
 
-def load_cifar10(batch_size=32, shuffle_buffer_size=10000):
+def load_cifar10(batch_size=32, shuffle_buffer_size=10000, splits=[0.7, 0.2, 0.1]):
     # Load CIFAR-10 dataset
     cifar10_dataset, info = tfds.load('cifar10', split='train', with_info=True)
     

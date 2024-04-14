@@ -10,18 +10,19 @@ from data_loaders import load_cifar10
 
 @jax.jit
 def loss_fn_cnn10(logits, target_data):
-    # Compute softmax cross-entropy loss
-    loss = -jnp.mean(jax.nn.log_softmax(logits) * target_data)
-    return loss
 
-@jax.jit
+    # Compute softmax cross-entropy loss
+    loss = optax.softmax_cross_entropy_with_integer_labels(logits,target_data)
+    return jnp.mean(loss)
+
+@partial(jax.jit,static_argnums = 1)
 @partial(jax.value_and_grad, argnums=0)
 def forward_cnn10(weights, model, input_data, target_data):
 
     prediction = model.apply(weights,input_data)
     return loss_fn_cnn10(prediction,target_data)
 
-@jax.jit
+@partial(jax.jit,static_argnums = [1,5])
 def train_step_cnn10(weights, model, input_data, target_data, opt_state, optimizer):
     
     loss_v,grads = forward_cnn10(weights, model, input_data,target_data)
@@ -39,7 +40,10 @@ def train_loop(training_data, model, model_weights, optimizer, opt_state):
         # Iterate over batches of training data
         for batch in training_data:
             input_data, target_data = batch
-            print(type(input_data))
+            print("type: " ,type(input_data))
+            input_data = jnp.array(input_data)
+            target_data = jnp.array(target_data)
+
             # Perform a training step
             loss, model_weights, opt_state = train_step_cnn10(model_weights, model, input_data, target_data, opt_state, optimizer)
             # Print or log the loss for monitoring

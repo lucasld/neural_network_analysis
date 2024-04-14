@@ -1,25 +1,34 @@
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
-# TODO: SEED
-# TODO: SPLIT
+def load_cifar10(batch_size=32, shuffle_buffer_size=10000, seed=None):
+    # Set seed
+    tf.random.set_seed(seed)
 
-def load_cifar10(batch_size=32, shuffle_buffer_size=10000, splits=[0.7, 0.2, 0.1]):
     # Load CIFAR-10 dataset
-    cifar10_dataset, info = tfds.load('cifar10', split='train', with_info=True)
+    train_ds, val_ds, test_ds = tfds.load('cifar10', split=['train', 'test[:50%]', 'test[50%:]'])
     
     # Define preprocessing function
-    def preprocess_data(sample):
-        image = tf.cast(sample['image'], tf.float32) / 255.0  # Normalize pixel values to [0, 1]
-        label = sample['label']
-        return image, label
+    def preprocess_dataset(dataset):
+        def preprocess_data(sample):
+            image = tf.cast(sample['image'], tf.float32) / 255.0  # Normalize pixel values to [0, 1]
+            label = sample['label']
+            return image, label
+        
+        dataset = dataset.map(preprocess_data)
+        # Shuffle the data
+        dataset = dataset.shuffle(buffer_size=shuffle_buffer_size, seed=seed)
+        # Batch and prefetch the data
+        dataset = dataset.batch(batch_size)
+        dataset = dataset.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
+        return dataset
     
-    # Apply preprocessing function and shuffle the data
-    cifar10_dataset = cifar10_dataset.map(preprocess_data)
-    cifar10_dataset = cifar10_dataset.shuffle(buffer_size=shuffle_buffer_size)
-    
-    # Batch and prefetch the data
-    cifar10_dataset = cifar10_dataset.batch(batch_size)
-    cifar10_dataset = cifar10_dataset.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
-    
-    return cifar10_dataset, info
+    # Apply preprocessing
+    train_dataset = preprocess_dataset(train_ds)
+    validation_dataset = preprocess_dataset(val_ds)
+    test_dataset = preprocess_dataset(test_ds)
+
+    return train_dataset, validation_dataset, test_dataset
+
+
+print(load_cifar10())

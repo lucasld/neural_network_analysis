@@ -20,8 +20,7 @@ class Cifar10CNN(nn.Module):
         x = nn.log_softmax(x)
         return x
 
-def create_model_cifar10(rng, input_shape=(32, 32, 3)):
+def create_model_cifar10(rng, input_shape=(1, 32, 32, 3)):
     model = Cifar10CNN()
-    variables = model.init(rng, jnp.ones(input_shape, jnp.float32))
-    weights = flax.jax_utils.unreplicate(variables['params'])  # Extract weights
+    weights = model.init(rng, jnp.ones(input_shape, jnp.float32))
     return model, weights

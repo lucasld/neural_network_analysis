@@ -1,7 +1,5 @@
-import jax
 import jax.numpy as jnp
 import flax.linen as nn
-from flax.training.common_utils import onehot
 import flax.linen.initializers as initializers
 
 
@@ -34,10 +32,34 @@ class Cifar10CNN(nn.Module):
         return x
 
 
-def create_model_cifar10(rng, input_shape=(1, 32, 32, 3), init_method='xavier',
-                         activation_func=nn.relu):
+class WineQualityNetwork(nn.Module):
+    init_method : str
+    activation_func : any
+
+    @nn.compact
+    def __call__(self, x):
+        if self.init_method == 'xavier':
+            initializer = initializers.xavier_uniform()
+        elif self.init_method == 'kaiming':
+            initializer = initializers.kaiming_uniform()
+        else:
+            raise ValueError("Invalid initialization method. Please use 'xavier' or 'kaiming'.")
+        const_initalizer = initializers.constant(0.01)
+        x = nn.Dense(features=20, kernel_init=initializer, bias_init=const_initalizer)(x)
+        x = self.activation_func(x)
+        x = nn.Dense(features=10, kernel_init=initializer, bias_init=const_initalizer)(x)
+        x = self.activation_func(x)
+        x = nn.Dense(features=5, kernel_init=initializer, bias_init=const_initalizer)(x)
+        x = nn.sigmoid(x)
+        return x
+    
+
+def create_model(model_class, rng, input_shape=(1, 32, 32, 3),
+                 init_method='xavier', activation_func=nn.relu):
     """Create a model and intilize it's weights.
 
+    :param model_class: model architecture class
+    :type model_class:
     :param rng: random number generator state
     :type rng: jax.random.PRNGKey
     :param input_shape: input shape to the model, defaults to (1, 32, 32, 3)
@@ -52,9 +74,7 @@ def create_model_cifar10(rng, input_shape=(1, 32, 32, 3), init_method='xavier',
     :rtype: tuple
     """
     # Create Model Object
-    model = Cifar10CNN(init_method, activation_func)
+    model = model_class(init_method, activation_func)
     # Initilize weights
     weights = model.init(rng, jnp.ones(input_shape, jnp.float32))
     return model, weights
-
-

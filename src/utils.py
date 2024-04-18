@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import os
-from pathlib import Path
 import pickle
 
 
@@ -11,8 +10,8 @@ def create_folder(path: str):
     :param path: path to folder that should be created
     :type path: str
     """
-    dir = Path(path)
-    dir.mkdir(exist_ok=True)
+
+    os.makedirs(path,exist_ok=True)
 
 
 def save_weights(weights, path: str, name: str):

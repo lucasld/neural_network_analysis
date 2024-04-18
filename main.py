@@ -2,6 +2,7 @@ import jax
 import optax
 import flax.linen.initializers as initializers
 import flax.linen as nn
+import os
 
 from src.models import Cifar10CNN, WineQualityNetwork, create_model
 from src.data_loaders import load_cifar10, load_wine_quality
@@ -39,11 +40,59 @@ def training_wine_quality(rng, init_func, activation_func, checkpoint_path):
                plot_every=50)
 
 
+configurations = {
+    'cifar10': {
+        'xavier_uniform': {
+            'tanh': (initializers.xavier_uniform(), nn.tanh),
+            'relu': (initializers.xavier_uniform(), nn.relu),
+            'sigmoid': (initializers.xavier_uniform(), nn.sigmoid)
+        },
+        'kaiming_normal': {
+            'tanh': (initializers.kaiming_normal(), nn.tanh),
+            'relu': (initializers.kaiming_normal(), nn.relu),
+            'sigmoid': (initializers.kaiming_normal(), nn.sigmoid)
+        },
+        'kaiming_uniform': {
+            'tanh': (initializers.kaiming_uniform(), nn.tanh),
+            'relu': (initializers.kaiming_uniform(), nn.relu),
+            'sigmoid': (initializers.kaiming_uniform(), nn.sigmoid)
+        }
+    },
+    'wine_quality': {
+        'xavier_uniform': {
+            'tanh': (initializers.xavier_uniform(), nn.tanh),
+            'relu': (initializers.xavier_uniform(), nn.relu),
+            'sigmoid': (initializers.xavier_uniform(), nn.sigmoid)
+        },
+        'kaiming_normal': {
+            'tanh': (initializers.kaiming_normal(), nn.tanh),
+            'relu': (initializers.kaiming_normal(), nn.relu),
+            'sigmoid': (initializers.kaiming_normal(), nn.sigmoid)
+        },
+        'kaiming_uniform': {
+            'tanh': (initializers.kaiming_uniform(), nn.tanh),
+            'relu': (initializers.kaiming_uniform(), nn.relu),
+            'sigmoid': (initializers.kaiming_uniform(), nn.sigmoid)
+        }
+    }
+}
+
+
 if __name__ == "__main__":
+    task = 'wine_quality'
+    init_method_str = 'kaiming_uniform'
+    activation_func_str = 'sigmoid'
+
     # define a random number generator key (seed)
     rng = jax.random.PRNGKey(0)
-    checkpoint_path = f"/Users/lld/Documents/SoSe 2024/deep_neural_network_analysis/neural_network_analysis/model_checkpoints/cifar10/xavier/tanh"
-    #checkpoint_path = f"/Users/lld/Documents/SoSe 2024/deep_neural_network_analysis/neural_network_analysis/model_checkpoints/wine_quality/xavier/tanh"
-    #training_wine_quality(rng, 'xavier')
-    training_cifar10(rng, initializers.xavier_uniform(), nn.tanh, checkpoint_path)
-
+    # create checkpoint path
+    checkpoint_path = os.path.join(os.getcwd(), "model_checkpoints/",
+                                   task, init_method_str, activation_func_str)
+    # get respective functions from configuration-dict
+    funcs = configurations[task][init_method_str][activation_func_str]
+    init_method, activation_func = funcs
+    
+    if task == 'cifar10':
+        training_cifar10(rng, init_method, activation_func, checkpoint_path)
+    elif task == 'wine_quality':
+        training_wine_quality(rng, init_method, activation_func, checkpoint_path)

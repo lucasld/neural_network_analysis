@@ -43,6 +43,10 @@ This file can be run to train a model using a certain configuration.
 ```bash
 python3 main.py [task] [init method] [activation func]
 ```
+* **task:** cifar10 / wine_quality
+* **init method:** xavier_uniform / kaiming_normal / kaiming_uniform
+* **activation func:** tanh / relu / sigmoid
+
 
 ### `main.sh`
 Executes *main.py* for all configurations.
@@ -69,5 +73,8 @@ Executes *main.py* for all configurations.
    ```bash
    conda activate env1
    ```
+
+### Loading weights
+Load the weights using the ```load_weights()``` function located in [src/utils.py](src/utils.py).
 
 

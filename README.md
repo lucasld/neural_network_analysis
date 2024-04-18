@@ -1,5 +1,5 @@
 # Deep Neural Network Analysis
-This repository serves as a resource for implementing and understanding deep neural network analysis techniques. Here, you'll find pre-defined models with weights for untrained, trained, and overfitted scenarios. The repository includes both an image classifier and a regression network. The repository also contains some slides going into detail about Xavier and Kaiming weight intilaization.
+This repository serves as a resource for implementing and understanding deep neural network analysis techniques. Here, you'll find pre-defined models with weights for untrained, trained, and overfitted scenarios. The repository includes both an image classifier and a regression network. The repository also contains some [slides](presentation.pdf) going into detail about Xavier and Kaiming weight intilaization.
 
 ## Project Structure
 ### `model_checkpoints/`
@@ -38,7 +38,14 @@ This folder contains all the code related to loading the datasets, creating the 
 
 
 ### `main.py`
-This file can be run to train a model using a certain configuration. However this will not be needed if you just want to analyze the provided weights.
+This file can be run to train a model using a certain configuration.
+
+```bash
+python3 main.py [task] [init method] [activation func]
+```
+
+### `main.sh`
+Executes *main.py* for all configurations.
 
 
 ## How to Use
@@ -60,7 +67,7 @@ This file can be run to train a model using a certain configuration. However thi
    conda env create -f environment.yml
    ```
    ```bash
-   conda activate <environment_name>
+   conda activate env1
    ```
 
 

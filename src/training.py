@@ -6,9 +6,6 @@ import os
 
 from src.utils import save_weights, plot_validation_losses, progress_print
 
-# TODO: check if model saving is enough like this by loading it in
-# TODO: add comments
-
 
 @jax.jit
 def loss_fn_cnn10(predictions, target_data):
@@ -71,7 +68,6 @@ def train_loop(training_data, validation_data, model, model_weights, optimizer,
     # save initial weights
     if checkpoint_path:
         save_weights(model_weights, checkpoint_path, "initial_weights")
-    best_loss = float('inf')
 
     # training
     for epoch in range(epochs):
@@ -91,13 +87,12 @@ def train_loop(training_data, validation_data, model, model_weights, optimizer,
         progress_print(epoch, loss, validation_loss)
         # save best model
         if not val_losses or validation_loss < min(val_losses):
-            best_loss = validation_loss
             if checkpoint_path:
                 save_weights(model_weights, checkpoint_path, "best_weights")
         val_losses.append(validation_loss)
         train_losses.append(sum(losses)/len(losses))
         losses = []
-        if epoch%plot_every==0:
+        if epoch%plot_every == 0:
             plot_validation_losses(val_losses, train_losses)
     # save validation loss plot
     plot_path = os.path.join(checkpoint_path, 'validation_losses.png')

@@ -3,7 +3,6 @@ import flax.linen as nn
 import flax.linen.initializers as initializers
 
 
-
 class Cifar10CNN(nn.Module):
     init_func : any
     activation_func : any

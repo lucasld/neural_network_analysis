@@ -40,7 +40,6 @@ def training_wine_quality(rng, init_func, activation_func, checkpoint_path):
                opt_state, loss_fn_wine, checkpoint_path, epochs=600,
                plot_every=50)
 
-
 configurations = {
     'cifar10': {
         'xavier_uniform': {
@@ -99,7 +98,6 @@ if __name__ == "__main__":
     parser.add_argument("activation_func", help="one of [tanh, relu,sigmoid]",
                     type=str)
     args = parser.parse_args()
-
 
     task = args.task
     init_method_str = args.init_method

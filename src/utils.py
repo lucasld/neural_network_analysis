@@ -3,7 +3,6 @@ import os
 import pickle
 
 
-
 def create_folder(path: str):
     """Creates folder from path.
     
@@ -46,7 +45,6 @@ def plot_validation_losses(validation_losses: list, train_losses: list,
                            save_path: str=None):
     """
     Plots the validation losses using matplotlib and saves the plot.
-
     
     :param validation_losses: list of validation losses
     :type validation_losses: list

@@ -5,57 +5,45 @@ import flax.linen.initializers as initializers
 
 
 class Cifar10CNN(nn.Module):
-    init_method : str
+    init_func : any
     activation_func : any
 
     @nn.compact
     def __call__(self, x):
-        if self.init_method == 'xavier':
-            initializer = initializers.xavier_uniform()
-        elif self.init_method == 'kaiming':
-            initializer = initializers.kaiming_uniform()
-        else:
-            raise ValueError("Invalid initialization method. Please use 'xavier' or 'kaiming'.")
-        const_initalizer = initializers.constant(0.01)
+        const_initalizer = initializers.constant(0)
         
-        x = nn.Conv(features=32, kernel_size=(3, 3), kernel_init=initializer, bias_init=const_initalizer)(x)
+        x = nn.Conv(features=32, kernel_size=(3, 3), kernel_init=self.init_func, bias_init=const_initalizer)(x)
         x = self.activation_func(x)
         x = nn.max_pool(x, window_shape=(2, 2), strides=(2, 2))
-        x = nn.Conv(features=64, kernel_size=(3, 3), kernel_init=initializer, bias_init=const_initalizer)(x)
+        x = nn.Conv(features=64, kernel_size=(3, 3), kernel_init=self.init_func, bias_init=const_initalizer)(x)
         x = self.activation_func(x)
         x = nn.max_pool(x, window_shape=(2, 2), strides=(2, 2))
         x = x.reshape((x.shape[0], -1))  # Flatten
-        x = nn.Dense(features=256, kernel_init=initializer, bias_init=const_initalizer)(x)
+        x = nn.Dense(features=256, kernel_init=self.init_func, bias_init=const_initalizer)(x)
         x = self.activation_func(x)
-        x = nn.Dense(features=10, kernel_init=initializer, bias_init=const_initalizer)(x)
+        x = nn.Dense(features=10, kernel_init=self.init_func, bias_init=const_initalizer)(x)
         x = nn.log_softmax(x)
         return x
 
 
 class WineQualityNetwork(nn.Module):
-    init_method : str
+    init_func : str
     activation_func : any
 
     @nn.compact
     def __call__(self, x):
-        if self.init_method == 'xavier':
-            initializer = initializers.xavier_uniform()
-        elif self.init_method == 'kaiming':
-            initializer = initializers.kaiming_uniform()
-        else:
-            raise ValueError("Invalid initialization method. Please use 'xavier' or 'kaiming'.")
-        const_initalizer = initializers.constant(0.01)
-        x = nn.Dense(features=20, kernel_init=initializer, bias_init=const_initalizer)(x)
+        const_initalizer = initializers.constant(0)
+        x = nn.Dense(features=128, kernel_init=self.init_func, bias_init=const_initalizer)(x)
         x = self.activation_func(x)
-        x = nn.Dense(features=10, kernel_init=initializer, bias_init=const_initalizer)(x)
+        x = nn.Dense(features=32, kernel_init=self.init_func, bias_init=const_initalizer)(x)
         x = self.activation_func(x)
-        x = nn.Dense(features=5, kernel_init=initializer, bias_init=const_initalizer)(x)
+        x = nn.Dense(features=1, kernel_init=self.init_func, bias_init=const_initalizer)(x)
         x = nn.sigmoid(x)
         return x
     
 
 def create_model(model_class, rng, input_shape=(1, 32, 32, 3),
-                 init_method='xavier', activation_func=nn.relu):
+                 init_func=initializers.xavier_uniform(), activation_func=nn.tanh):
     """Create a model and intilize it's weights.
 
     :param model_class: model architecture class
@@ -66,15 +54,15 @@ def create_model(model_class, rng, input_shape=(1, 32, 32, 3),
     :type input_shape: tuple, optional
     :param init_method: choose between 'xavier' and 'kaiming' weight-init,
         defaults to 'xavier'
-    :type init_method: string, optional
+    :type init_method: string, optional TODO
     :param activation_func: activation layer to be used,
-        defaults to flax.linen.nn.relu
+        defaults to flax.linen.nn.tanh
     :type activation_func: flax.linen.nn
     :returns: model and weights
     :rtype: tuple
     """
     # Create Model Object
-    model = model_class(init_method, activation_func)
+    model = model_class(init_func, activation_func)
     # Initilize weights
     weights = model.init(rng, jnp.ones(input_shape, jnp.float32))
     return model, weights

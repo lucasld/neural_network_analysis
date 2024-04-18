@@ -3,6 +3,7 @@ import optax
 import flax.linen.initializers as initializers
 import flax.linen as nn
 import os
+import argparse
 
 from src.models import Cifar10CNN, WineQualityNetwork, create_model
 from src.data_loaders import load_cifar10, load_wine_quality
@@ -56,6 +57,11 @@ configurations = {
             'tanh': (initializers.kaiming_uniform(), nn.tanh),
             'relu': (initializers.kaiming_uniform(), nn.relu),
             'sigmoid': (initializers.kaiming_uniform(), nn.sigmoid)
+        },
+        'kaiming_normal': {
+            'tanh': (initializers.kaiming_normal(), nn.tanh),
+            'relu': (initializers.kaiming_normal(), nn.relu),
+            'sigmoid': (initializers.kaiming_normal(), nn.sigmoid)
         }
     },
     'wine_quality': {
@@ -73,16 +79,32 @@ configurations = {
             'tanh': (initializers.kaiming_uniform(), nn.tanh),
             'relu': (initializers.kaiming_uniform(), nn.relu),
             'sigmoid': (initializers.kaiming_uniform(), nn.sigmoid)
+        },
+        'kaiming_normal': {
+            'tanh': (initializers.kaiming_normal(), nn.tanh),
+            'relu': (initializers.kaiming_normal(), nn.relu),
+            'sigmoid': (initializers.kaiming_normal(), nn.sigmoid)
         }
     }
 }
 
 
 if __name__ == "__main__":
-    task = 'wine_quality'
-    init_method_str = 'kaiming_uniform'
-    activation_func_str = 'sigmoid'
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument("task", help="one of [cifar10, wine_quality]",
+                    type=str)
+    parser.add_argument("init_method", help="one of [xavier_uniform, kaiming_normal,kaiming_uniform]",
+                    type=str)
+    parser.add_argument("activation_func", help="one of [tanh, relu,sigmoid]",
+                    type=str)
+    args = parser.parse_args()
+
+
+    task = args.task
+    init_method_str = args.init_method
+    activation_func_str = args.activation_func
+    
     # define a random number generator key (seed)
     rng = jax.random.PRNGKey(0)
     # create checkpoint path

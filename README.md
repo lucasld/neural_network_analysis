@@ -74,7 +74,7 @@ Executes *main.py* for all configurations.
    conda activate env1
    ```
 
-3. If creating the env from the environment file did not work for you,
+4. If creating the env from the environment file did not work for you,
 you can install all dependencies via:
 
     Run one of the 3 commands for cpu, cuda or tpu support respectively:
@@ -99,6 +99,18 @@ you can install all dependencies via:
     ```
     pip install matplotlib
     ```
+5. To run all experiments run:
+    ```
+    sh main.sh
+    ```
+
+    To run a single experiment run:
+   ```
+    python main.py cifar10|wine_quality xavier_uniform|xavier_normal|glorot_uniform|glorot_normal tanh|relu|sigmoid
+   ```
+   
+   
+   
 
 ### Loading weights
 Load the weights using the ```load_weights()``` function located in [src/utils.py](src/utils.py).

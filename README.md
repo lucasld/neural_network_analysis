@@ -85,7 +85,10 @@ you can install all dependencies via:
     ```
     Run the rest:
     ```
-    pip install optax
+    pip install optax==0.1.7
+    ```
+    ```
+    pip install scipy==1.11.4
     ```
     ```
     pip install -U "flax[all]"

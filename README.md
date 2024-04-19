@@ -67,12 +67,23 @@ Executes *main.py* for all configurations.
    ```
 
 3. Install the required packages (possibly activate/create conda env):
-   ```bash
-   conda env create -f environment.yml
-   ```
-   ```bash
-   conda activate env1
-   ```
+    * Run the following command to create a virtual environment:
+        ```bash
+        python3 -m venv myenv
+        ```
+    * Activate the virtual environment:
+        - **Windows**:
+            ```
+            myenv\Scripts\activate
+            ```
+        - **Unix/Linux/macOS**:
+            ```
+            source myenv/bin/activate
+            ```
+    * Install project dependencies
+        ```bash
+        pip install -r requirements.txt
+        ```
 
 4. If creating the env from the environment file did not work for you,
 you can install all dependencies via:

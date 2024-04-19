@@ -47,11 +47,6 @@ configurations = {
             'relu': (initializers.xavier_uniform(), nn.relu),
             'sigmoid': (initializers.xavier_uniform(), nn.sigmoid)
         },
-        'xavier_normal': {
-            'tanh': (initializers.kaiming_normal(), nn.tanh),
-            'relu': (initializers.kaiming_normal(), nn.relu),
-            'sigmoid': (initializers.kaiming_normal(), nn.sigmoid)
-        },
         'kaiming_uniform': {
             'tanh': (initializers.kaiming_uniform(), nn.tanh),
             'relu': (initializers.kaiming_uniform(), nn.relu),
@@ -68,11 +63,6 @@ configurations = {
             'tanh': (initializers.xavier_uniform(), nn.tanh),
             'relu': (initializers.xavier_uniform(), nn.relu),
             'sigmoid': (initializers.xavier_uniform(), nn.sigmoid)
-        },
-        'xavier_normal': {
-            'tanh': (initializers.kaiming_normal(), nn.tanh),
-            'relu': (initializers.kaiming_normal(), nn.relu),
-            'sigmoid': (initializers.kaiming_normal(), nn.sigmoid)
         },
         'kaiming_uniform': {
             'tanh': (initializers.kaiming_uniform(), nn.tanh),

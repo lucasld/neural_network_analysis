@@ -26,7 +26,7 @@ class Cifar10CNN(nn.Module):
 
 
 class WineQualityNetwork(nn.Module):
-    init_func : str
+    init_func : any
     activation_func : any
 
     @nn.compact

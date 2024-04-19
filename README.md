@@ -120,7 +120,7 @@ you can install all dependencies via:
 
     To run a single experiment run:
    ```
-    python main.py cifar10|wine_quality xavier_uniform|xavier_normal|glorot_uniform|glorot_normal tanh|relu|sigmoid
+    python main.py cifar10|wine_quality xavier_uniform|glorot_uniform|glorot_normal tanh|relu|sigmoid
    ```
    
    

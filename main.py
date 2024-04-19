@@ -83,9 +83,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("task", help="one of [cifar10, wine_quality]",
                     type=str)
-    parser.add_argument("init_method", help="one of [xavier_uniform, kaiming_normal,kaiming_uniform]",
+    parser.add_argument("init_method", help="one of [xavier_uniform, kaiming_normal, kaiming_uniform]",
                     type=str)
-    parser.add_argument("activation_func", help="one of [tanh, relu,sigmoid]",
+    parser.add_argument("activation_func", help="one of [tanh, relu, sigmoid]",
                     type=str)
     args = parser.parse_args()
 

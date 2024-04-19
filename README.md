@@ -77,9 +77,13 @@ Executes *main.py* for all configurations.
 3. If creating the env from the environment file did not work for you,
 you can install all dependencies via:
 
+    Run one of the 3 commands for cpu, cuda or tpu support respectively:
     ```
-    pip install -U "jax[cpu]" or pip install -U "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html or pip install -U "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
+    pip install -U "jax[cpu]"
+    pip install -U "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+    pip install -U "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
     ```
+    Run the rest:
     ```
     pip install optax
     ```

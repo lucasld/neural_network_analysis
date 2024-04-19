@@ -74,6 +74,28 @@ Executes *main.py* for all configurations.
    conda activate env1
    ```
 
+3. If creating the env from the environment file did not work for you,
+you can install all dependencies via:
+
+    ```
+    pip install -U "jax[cpu]" or pip install -U "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html or pip install -U "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
+    ```
+    ```
+    pip install optax
+    ```
+    ```
+    pip install -U "flax[all]"
+    ```
+    ```
+    pip install tensorflow_datasets
+    ```
+    ```
+    pip install tensorflow
+    ```
+    ```
+    pip install matplotlib
+    ```
+
 ### Loading weights
 Load the weights using the ```load_weights()``` function located in [src/utils.py](src/utils.py).
 

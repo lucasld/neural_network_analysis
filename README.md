@@ -55,7 +55,7 @@ Executes *main.py* for all configurations.
 ## How to Use
 ### Installation
 
-**(version of Python == 3.10)**
+**(version of Python == 3.11)**
 
 1. Clone the repository:
 
